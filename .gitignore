@@ -11,3 +11,5 @@ __pycache__/
 basestation/node_modules/
 
 */**/_db_/
+
+*/**/env.json

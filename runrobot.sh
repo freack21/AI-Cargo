@@ -1,3 +1,6 @@
 #!/bin/bash
 
-python3 comm/comm.py
+git pull
+
+cd comm/
+python3 comm.py

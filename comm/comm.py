@@ -1,10 +1,17 @@
 import socketio
 from commbotpy import CommBotClient
+import json
+import os
+
+ENV_FILE = os.path.join(os.path.dirname(__file__), "env.json")
+_env_ = {}
+with open(ENV_FILE, "r") as f:
+  _env_ = json.load(f)
 
 class Socket :
   def __init__(self) :
     # Initialize CommBot
-    self.cb = CommBotClient("/dev/ttyUSB0")
+    self.cb = CommBotClient(_env_.get("PORT", "/dev/ttyUSB0"))
 
     self.initGlobalVars()
     self.initSocketIO()
@@ -13,13 +20,9 @@ class Socket :
 
   def initGlobalVars(self) :
     self.myUsername = "aikargo"
-    # self.alamatIP = "http://10.234.218.146:3210/"
-    # self.alamatIP = "http://172.16.252.106:3210/"
-    # self.alamatIP = "http://192.168.1.84:3210/"
-    self.alamatIP = "http://192.168.137.1:3210/"
-    # self.alamatIP = "http://localhost:3210/"
+    self.alamatIP = _env_.get("WS_URL", "http://192.168.137.1:3210/")
 
-    self.is_debug = True
+    self.is_debug = _env_.get("DEBUG", True)
 
 
   def initSocketIO(self) :
