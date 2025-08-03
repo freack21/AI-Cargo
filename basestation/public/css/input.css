@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+.field-body {
+  @apply flex justify-center items-start p-6 gap-8 bg-[#519629];
+}
+
+.move-input {
+  @apply w-[54px] h-[32px] border-gray-400 border-[1px] text-center text-[14px] font-mono;
+}
+
+.global-position-input,
+.robot-state-input,
+.rack-color-input,
+.box-color-input,
+.robot-cmd-input {
+  @apply w-[48px] h-[32px] border-black border-[1px] text-center text-[14px] font-mono rounded-md text-black;
+}
+
+.status-robot {
+  @apply font-bold;
+}
+
+.status-robot.on {
+  @apply text-green-600;
+}
+
+.status-robot.off {
+  @apply text-red-600;
+}
+
+.control-button {
+  @apply rounded-md bg-[#fff] hover:bg-black hover:text-white p-2 w-full border-[1px] border-black text-black text-xs;
+}
+
+.moda-button {
+  @apply bg-[#fff] p-2 w-full border-[1px] border-black text-black rounded-lg;
+}
+
+#robot_sensors {
+  @apply bg-[#fff] w-full h-full px-[1rem] py-[2rem] rounded-lg;
+}
+
+#robot_body {
+  @apply border-2 border-[#000] w-[400px] h-[420px] rounded-[2.5rem] relative;
+}
+
+#robot_wheel1 {
+  @apply hover:border-[#999] border-1 border-[#000] rounded-lg bg-[#ccc] w-[50px] h-[100px] absolute top-[-5%] left-0 rotate-45;
+}
+
+#robot_wheel2 {
+  @apply hover:border-[#999] border-1 border-[#000] rounded-lg bg-[#ccc] w-[50px] h-[100px] absolute top-[-5%] right-0 -rotate-45;
+}
+
+#robot_wheel3 {
+  @apply hover:border-[#999] border-1 border-[#000] rounded-lg bg-[#ccc] w-[50px] h-[100px] absolute bottom-[-12.5%] right-[50%] translate-x-[50%] rotate-90;
+}
+
+.sensor-sonar {
+  @apply border-2 border-[#f33] bg-[#333] w-[32px] h-[16px] absolute text-center;
+}
+
+.sensor-sonar span {
+  @apply text-[#000] block mt-[-2rem];
+}
+
+#sensor_sonar0 {
+  @apply top-[-3%] right-[50%] translate-x-[50%];
+}
+
+#sensor_sonar1 {
+  @apply top-[50%] left-[-5%] -rotate-90;
+}
+
+#sensor_sonar1 span {
+  @apply rotate-90;
+}
+
+#sensor_sonar2 {
+  @apply top-[50%] right-[-5%] rotate-90;
+}
+
+#sensor_sonar2 span {
+  @apply -rotate-90;
+}
+
+#sensor_sonar3 {
+  @apply bottom-[-3%] right-[20%] rotate-180;
+}
+
+#sensor_sonar3 span {
+  @apply -rotate-180;
+}
+
+#sensor_sonar4 {
+  @apply bottom-[-3%] left-[20%] rotate-180;
+}
+
+#sensor_sonar4 span {
+  @apply -rotate-180;
+}
+
+#sensor_line {
+  @apply w-[64px] h-[64px] border-[#000] border-2 absolute top-0 right-[50%] translate-x-[50%] border-t-0;
+}
+
+#sensor_line0 {
+  @apply w-[16px] h-[16px] border-[#000] border-1 absolute bottom-[50%] right-[15%] translate-y-[50%] rounded-full bg-[#f00];
+}
+
+#sensor_line1 {
+  @apply w-[16px] h-[16px] border-[#000] border-1 absolute bottom-[50%] left-[15%] translate-y-[50%] rounded-full bg-[#f00];
+}
+
+button#left-up {
+  @apply w-5 h-5 hover:border-[#999] border-1 border-[#000] rounded-tl-lg;
+}
+
+button#up {
+  @apply w-8 h-8 hover:border-[#999] border-1 border-[#000] rounded-t-lg;
+}
+
+button#right-up {
+  @apply w-5 h-5 hover:border-[#999] border-1 border-[#000] rounded-tr-lg;
+}
+
+button#left {
+  @apply w-8 h-8 hover:border-[#999] border-1 border-[#000] rounded-l-lg;
+}
+
+button#berhenti {
+  @apply w-8 h-8 hover:bg-red-600 border-2 border-red-700 rounded-full;
+}
+
+button#right {
+  @apply w-8 h-8 hover:border-[#999] border-1 border-[#000] rounded-r-lg;
+}
+
+button#left-down {
+  @apply w-5 h-5 hover:border-[#999] border-1 border-[#000] rounded-bl-lg;
+}
+
+button#down {
+  @apply w-8 h-8 hover:border-[#999] border-1 border-[#000] rounded-b-lg;
+}
+
+button#right-down {
+  @apply w-5 h-5 hover:border-[#999] border-1 border-[#000] rounded-br-lg;
+}
+
+button#reset,
+button#resetmoda {
+  @apply bg-red-600 text-white px-4 py-1 rounded-md border-[1px] border-black;
+}
+
+.to-btn {
+  @apply w-12 h-8 hover:border-[#999] hover:text-[#999] border-[1px] border-[#000] rounded-full text-black;
+}
+
+/* Tambahan style ke dalam input.css */
+.input-number {
+  @apply w-full px-3 py-1 rounded-md border border-black focus:outline-none focus:ring-2 focus:ring-gray-400;
+}
+
+.form-label {
+  @apply block mb-1 text-sm font-semibold text-gray-700;
+}
+
+.faktor-item {
+  @apply flex flex-col;
+}
+
+.sub-label {
+  @apply block text-xs font-medium text-gray-500 mb-1 text-center;
+}
+
+#deskripsiArea {
+  @apply w-full border-2 border-black rounded-lg p-2;
+}
+
+.moda-link {
+  @apply text-xs text-blue-600;
+}

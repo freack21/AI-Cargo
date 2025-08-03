@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/output.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="/vendor/sweetalert2/dist/sweetalert2.min.css"
+    />
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="/css/main.min.css" />
+    <title>Moda <%= moda %> Control Panel | Inayah</title>
+
+    <style>
+      .sticky-right {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .list-body {
+        max-height: 75vh;
+        overflow-y: scroll;
+      }
+
+      .list-group-item {
+        cursor: move; /* Show move cursor for draggable items */
+      }
+    </style>
+  </head>
+
+  <body class="green">
+    <!-- navbar -->
+    <ul class="nav navbar-c justify-content-center my-3 nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/perintah.html"
+          >Perintah</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/kalibrasi.html">Kalibrasi</a>
+      </li>
+    </ul>
+
+    <section class="mb-5 px-4 moda">
+      <div class="row my-5">
+        <div class="col-lg-6">
+          <div class="card border-r">
+            <p class="text-md p-4 py-3 mb-10">Deskripsi</p>
+            <hr />
+            <div class="card-body mt-10">
+              <textarea
+                name="deskripsiArea"
+                id="deskripsiArea"
+                placeholder="Masukkan deskripsi disini.."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="card border-r mt-4">
+            <div class="flex p-4 py-3 mb-10 justify-between items-center">
+              <p class="text-md mt-3">Perintah Robot</p>
+              <button
+                class="btn text-black px-4 py-2 rounded-2xl"
+                onclick="addList()"
+              >
+                Simpan
+              </button>
+            </div>
+            <hr />
+            <div class="card-body mt-10 list-body">
+              <ul id="list1" class="list-group list-robot"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div id="command-groups-container" class="row">
+            <!-- Groups akan di-render secara dinamis oleh JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="d-none" id="modaKe" data-nilai="<%= moda %>"></div>
+
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="/vendor/sortablejs/Sortable.min.js"></script>
+    <script src="/js/modal.placeholder.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      let list1 = document.getElementById("list1");
+      let deskripsiArea = document.getElementById("deskripsiArea");
+      let modaKeBrp = document.getElementById("modaKe").dataset.nilai;
+      let groupsContainer = document.getElementById("command-groups-container");
+      var modaGroup = null;
+
+      // Fungsi untuk mengelompokkan perintah berdasarkan kategori
+      function groupCommandsByCategory() {
+        const categories = {};
+
+        for (const key in valueData) {
+          const category = valueData[key][1];
+          if (!categories[category]) {
+            categories[category] = [];
+          }
+          categories[category].push(key);
+        }
+
+        return categories;
+      }
+
+      function renderAll(data) {
+        const categories = groupCommandsByCategory();
+        let html = "";
+
+        // Render semua grup command
+        for (const category in categories) {
+          html += `
+      <div class="col-md-4 mb-3">
+        <div class="card border-r h-100">
+          <p class="text-sm p-4 py-3 mb-10">${category}</p>
+          <hr />
+          <div class="card-body mt-10 list-body" style="max-height: 30vh;">
+            <ul id="listCmd_${category.replace(
+              /\s+/g,
+              "_"
+            )}" class="list-group"></ul>
+          </div>
+        </div>
+      </div>
+    `;
+        }
+
+        // Tambahkan grup Moda
+        html += `
+    <div class="col-md-4 mb-3">
+      <div class="card border-r h-100">
+        <p class="text-sm p-4 py-3 mb-10">Moda</p>
+        <hr />
+        <div class="card-body mt-10 list-body" style="max-height: 30vh;">
+          <ul id="listCmd_moda" class="list-group"></ul>
+        </div>
+      </div>
+    </div>
+  `;
+
+        groupsContainer.innerHTML = html;
+
+        // Inisialisasi setiap grup command
+        for (const category in categories) {
+          const listId = `listCmd_${category.replace(/\s+/g, "_")}`;
+          const listElement = document.getElementById(listId);
+          let itemsHtml = "";
+
+          categories[category].forEach((key) => {
+            itemsHtml += `
+        <li data-form="${
+          placeholderData[key] && placeholderData[key].length
+            ? placeholderData[key].length
+            : 0
+        }" data-type="${key}" class="text-xs list-group-item border-[1px] rounded border-black my-2 text-center">
+          ${valueData[key][0]}
+        </li>
+      `;
+          });
+
+          listElement.innerHTML = itemsHtml;
+
+          new Sortable(listElement, {
+            group: {
+              name: "shared",
+              pull: "clone",
+              put: false,
+            },
+            animation: 150,
+            sort: false,
+          });
+        }
+
+        // Inisialisasi grup moda
+        const listModa = document.getElementById("listCmd_moda");
+        let modaHtml = "";
+
+        for (const m of data) {
+          modaHtml += `
+      <li data-type="moda" data-moda="${m.moda}" title="${m.deskripsi}" class="text-xs list-group-item border-[1px] rounded border-black my-2 text-center">
+        ${m.moda} <a href="/moda/${m.moda}" class="moda-link" target="_blank">Lihat</a>
+      </li>
+    `;
+        }
+
+        listModa.innerHTML = modaHtml;
+
+        new Sortable(listModa, {
+          group: {
+            name: "shared",
+            pull: "clone",
+            put: false,
+          },
+          animation: 150,
+          sort: false,
+        });
+
+        modaGroup = listModa;
+      }
+
+      socket.emit("ping-moda");
+
+      socket.on("read-moda", ({ data }) => {
+        data = data.sort((a, b) => a.moda - b.moda);
+
+        // Panggil fungsi render saat halaman dimuat
+        renderAll(data);
+      });
+
+      // Sisanya tetap sama...
+      socket.emit("ping-moda-list", {
+        moda: modaKeBrp,
+      });
+
+      socket.on("read-moda-list", ({ data }) => {
+        if (data.data && data.moda == modaKeBrp) {
+          list1.innerHTML = "";
+          data.data.forEach((e) => {
+            for (let i = 0; i < e.length; i++) {
+              let data = e[i];
+              if (data == null) data = { activity: "kosong", attribute: [] };
+
+              if (i == 0) {
+                const _p_ = addModaList(data);
+                _p_ && list1.insertAdjacentHTML("beforeend", _p_);
+              }
+            }
+          });
+          deskripsiArea.value = data.deskripsi || "";
+        }
+      });
+
+      socket.on("moda-list-saved", (moda) => {
+        if (moda == modaKeBrp) {
+          Swal.fire({
+            title: `Tersimpan!`,
+            text: `Moda berhasil disimpan!`,
+            icon: "success",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+        }
+      });
+
+      new Sortable(list1, {
+        group: "shared",
+        animation: 150,
+        onAdd: function (evt) {
+          if (evt.from == modaGroup) {
+            let newItem = evt.item;
+
+            let moda = newItem.dataset.moda;
+
+            newItem.innerHTML = `<div class="d-flex moda-cmd" data-moda="${moda}">
+<div class="p-2 text-left flex-fill icons text-sm">Moda ${moda} <a href="/moda/${moda}" class="moda-link" target="_blank">Lihat</a></div>
+<div class="p-2 flex-fill"></div>
+<div class="p-2 flex-fill">
+  <button class="btn btn-danger btn-sm float-end delete-button" onclick="createDeleteButton(this)"><i class="fa-solid fa-trash"></i></button>
+</div>
+</div>`;
+
+            newItem.appendChild(newItem.firstChild);
+            return;
+          }
+          let newItem = evt.item;
+          let isiActivityform = "";
+
+          // mengambil dataset
+          let form = newItem.dataset.form;
+          let type = newItem.dataset.type;
+          let value = valueData[type][0];
+
+          for (let i = 0; i < form; i++) {
+            isiActivityform += `<input type="${
+              ["dir", "title"].includes(placeholderData[type][i])
+                ? "text"
+                : "number"
+            }" class="form text-sm" onchange="updateDataList(this)" data-${
+              placeholderData[type][i]
+            }="0" data-ftype="${placeholderData[type][i]}" placeholder="${
+              placeholderData[type][i]
+            }"${
+              ["title"].includes(placeholderData[type][i])
+                ? " style='width:100% !important;'"
+                : ""
+            }>`;
+          }
+
+          newItem.innerHTML = `<div class="d-flex">
+<div class="p-2 text-left flex-fill icons text-sm">${value}</div>
+<div class="p-2 flex-fill">${isiActivityform}</div>
+<div class="p-2 flex-fill">
+  <button class="btn btn-danger btn-sm float-end delete-button" onclick="createDeleteButton(this)"><i class="fa-solid fa-trash"></i></button>
+</div>
+</div>`;
+
+          newItem.appendChild(newItem.firstChild);
+        },
+      });
+
+      function createDeleteButton(e) {
+        let el = e.parentElement.parentElement.parentElement;
+
+        el.parentElement.removeChild(el);
+      }
+
+      function updateDataList(e) {
+        if (e.dataset.ftype == "x") {
+          e.dataset.x = e.value || "0";
+        } else if (e.dataset.ftype == "y") {
+          e.dataset.y = e.value || "0";
+        } else if (e.dataset.ftype == "z") {
+          e.dataset.z = e.value || "0";
+        } else if (e.dataset.ftype == "s") {
+          e.dataset.s = e.value || "0";
+        } else if (e.dataset.ftype == "dir") {
+          e.dataset.dir = e.value || "kanan";
+        } else if (e.dataset.ftype == "title") {
+          e.dataset.title = e.value || "";
+        } else if (e.dataset.ftype == "limit") {
+          e.dataset.limit = e.value || "-1";
+        } else if (e.dataset.ftype == "smooth") {
+          e.dataset.smooth = e.value || "-1";
+        } else if (e.dataset.ftype == "index") {
+          e.dataset.index = e.value || "0";
+        }
+      }
+
+      function addList() {
+        let dataForm = [];
+        let listRobot = document.querySelectorAll(".list-robot");
+
+        listRobot.forEach((element) => {
+          let dataRobotKe = [];
+          let lists = element.querySelectorAll("li");
+
+          lists.forEach((el, i) => {
+            let modaCmd = el.querySelector(".moda-cmd");
+            if (modaCmd) {
+              let moda = modaCmd.dataset.moda;
+
+              dataRobotKe.push({
+                moda,
+              });
+            } else {
+              let inputans = el.querySelectorAll(".form");
+              let dataInput = [];
+
+              let existData = [];
+              inputans.forEach((inputan) => {
+                for (const data in placeholderData) {
+                  placeholderData[data].forEach((d) => {
+                    if (existData.indexOf(d) < 0) {
+                      if (inputan.dataset.ftype == d) {
+                        dataInput.push(inputan.dataset[d] || "0");
+                        existData.push(d);
+                      }
+                    }
+                  });
+                }
+              });
+
+              let dataList = {
+                activity: el.dataset.type,
+                attribute: dataInput,
+              };
+
+              dataRobotKe.push(dataList);
+            }
+          });
+
+          let dataRobot = {
+            robot: "1",
+            data: dataRobotKe,
+          };
+
+          dataForm.push(dataRobot);
+        });
+
+        socket.emit("add-moda-list", {
+          moda: modaKeBrp,
+          data: dataForm,
+          deskripsi: deskripsiArea.value,
+        });
+      }
+
+      function addModaList(dataPerintah) {
+        let type = dataPerintah.activity;
+        let attribute = dataPerintah.attribute;
+        let _moda_ = dataPerintah.moda;
+
+        let datass = "";
+        let isiActivityform = "";
+
+        if (!isNaN(Number(_moda_))) {
+          datass = `<li class="list-group-item border-r mb-2 shadow-sm text-center" style="height:64px;overflow:hidden">
+    <div class="d-flex moda-cmd" data-moda="${_moda_}">
+      <div class="p-2 text-left flex-fill icons text-sm">Moda ${_moda_} <a href="/moda/${_moda_}" class="moda-link" target="_blank">Lihat</a></div>
+      <div class="p-2 flex-fill"></div>
+      <div class="p-2 flex-fill">
+        <button class="btn btn-danger btn-sm float-end delete-button" onclick="createDeleteButton(this)"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>
+  </li>`;
+
+          return datass;
+        } else {
+          if (containsKey(placeholderData, type)) {
+            placeholderData[type].forEach((elec, ind) => {
+              isiActivityform += `<input type="${
+                ["dir", "title"].includes(elec) ? "text" : "number"
+              }" class="form text-sm" onchange="updateDataList(this)" data-${elec}="${
+                attribute[ind]
+              }" value="${
+                attribute[ind]
+              }" data-ftype="${elec}" placeholder="${elec}"${
+                ["title"].includes(elec)
+                  ? " style='width:100% !important;'"
+                  : ""
+              }>`;
+            });
+          }
+
+          datass = `<li data-form="${
+            placeholderData[type] ? placeholderData[type].length : "0"
+          }" data-type="${type}" class="list-group-item border-r mb-2 shadow-sm text-center" style="height:64px;overflow:hidden">
+    <div class="d-flex">
+      <div class="p-2 text-left flex-fill icons text-sm">${
+        valueData[type][0]
+      }</div>
+      <div class="p-2 flex-fill text-sm">${isiActivityform}</div>
+      <div class="p-2 flex-fill">
+        <button class="btn btn-danger btn-sm float-end delete-button" onclick="createDeleteButton(this)"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>
+  </li>`;
+
+          return datass;
+        }
+      }
+    </script>
+  </body>
+</html>

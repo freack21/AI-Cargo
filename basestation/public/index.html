@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Control Panel | Inayah</title>
+    <link href="css/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="vendor/sweetalert2/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="css/main.min.css" />
+    <link href="css/video-js.css" rel="stylesheet" />
+  </head>
+
+  <body class="regional green">
+    <!-- navbar -->
+    <ul class="nav navbar-c justify-content-center my-3 nav-pills">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="perintah.html">Perintah</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="kalibrasi.html">Kalibrasi</a>
+      </li>
+    </ul>
+
+    <div class="mb-5 px-4 py-4">
+      <div class="row">
+        <div class="col-12 mb-4">
+          <center>
+            <h1>MRI-G2 | BaseStation</h1>
+            <h6><em>Mobile Robotics Inayah Gen 2</em></h6>
+          </center>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card border-r shadow-sm">
+            <div class="card-body">
+              <div class="text-center">
+                <p>Vision Robot</p>
+              </div>
+
+              <img id="robotVision" class="video-js" alt="Vision Robot" />
+
+              <div class="row mt-2">
+                <div class="col-lg-6 mx-auto">
+                  <div class="d-grid gap-2 mt-3 mb-3">
+                    <button
+                      class="cmd-btn btn btn-green"
+                      id="startVision"
+                      type="button"
+                    >
+                      Start Vision
+                    </button>
+                  </div>
+                </div>
+                <div class="col-lg-6 mx-auto">
+                  <div class="d-grid gap-2 mt-3 mb-3">
+                    <button
+                      class="cmd-btn btn stop-btn"
+                      id="endVision"
+                      type="button"
+                    >
+                      End Vision
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="shadow-sm rounded-lg border-[1px] border-black">
+            <center>
+              <div id="robot_sensors">
+                <div id="robot_body">
+                  <div id="robot_wheel1"></div>
+                  <div id="robot_wheel2"></div>
+                  <div id="robot_wheel3"></div>
+                  <div id="sensor_line">
+                    <div id="sensor_line0"></div>
+                    <div id="sensor_line1"></div>
+                  </div>
+                  <div class="sensor-sonar" id="sensor_sonar0">
+                    <span>-1</span>
+                  </div>
+                  <div class="sensor-sonar" id="sensor_sonar1">
+                    <span>-1</span>
+                  </div>
+                  <div class="sensor-sonar" id="sensor_sonar2">
+                    <span>-1</span>
+                  </div>
+                  <div class="sensor-sonar" id="sensor_sonar3">
+                    <span>-1</span>
+                  </div>
+                  <div class="sensor-sonar" id="sensor_sonar4">
+                    <span>-1</span>
+                  </div>
+                </div>
+              </div>
+            </center>
+          </div>
+
+          <div class="log-informasi mt-4">
+            <div class="row">
+              <div class="col-12">
+                <div class="card border-r">
+                  <div class="d-flex">
+                    <div class="flex-grow-1">
+                      <p class="text-sm px-3 py-3 mb-10">
+                        <strong class="text-orange-600"
+                          >Inayah | BaseStation</strong
+                        >
+                        @
+                        <strong class="text-gray-800"
+                          >http://<span id="ip-basestation">127.0.0.1</span
+                          >:<span id="port-basestation">3000</span></strong
+                        >
+                      </p>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onclick="clockLogTrash()"
+                        class="btn btn-delete border-r"
+                      >
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onclick="clockLog()"
+                        class="btn btn-green btn-clock border-r"
+                      >
+                        <i class="fa-regular fa-clock"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="card-body p-2">
+                    <div class="consoleLog border-r"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-lg-4">
+          <div class="w-full bg-white shadow-sm border-r mb-4">
+            <div
+              class="w-full flex justify-between items-center p-4 py-2 mb-10"
+            >
+              <p class="text-sm mt-3">Moda</p>
+              <button
+                class="bg-red-600 text-white px-4 py-1 rounded-md"
+                id="resetmoda"
+              >
+                Reset
+              </button>
+            </div>
+            <hr />
+
+            <div
+              id="modaBox"
+              class="grid grid-cols-5 gap-2 text-white text-[14px] p-4 pt-2"
+            ></div>
+
+            <hr />
+            <div class="p-3 pt-0">
+              <button
+                class="btn bg-blue-600 text-black px-4 py-1 rounded-md"
+                id="sendAllModa"
+              >
+                Transfer Data
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <!-- menu robot -->
+          <div class="flex flex-col gap-8">
+            <div class="w-full bg-white shadow-sm border-r">
+              <div
+                class="w-full flex justify-between items-center p-4 py-2 mb-10"
+              >
+                <p class="text-sm mt-3">
+                  Robot -
+                  <span id="status" class="status-robot off">Offline</span>
+                </p>
+                <button
+                  onclick="document.querySelector('#reset').click()"
+                  class="btn stop-btn"
+                >
+                  Reset
+                </button>
+              </div>
+              <hr />
+              <div
+                class="flex justify-evenly items-center gap-2 p-4 pb-1 mt-[-1rem]"
+              >
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="servoCapit"
+                    >Capit</label
+                  ><input
+                    type="text"
+                    class="robot-state-input"
+                    id="servoCapit"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="servoLengan"
+                    >Lengan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-state-input"
+                    id="servoLengan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="servoTiang"
+                    >Tiang</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-state-input"
+                    id="servoTiang"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="stepperDC"
+                    >StepperDC</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-state-input"
+                    id="stepperDC"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="stepTo0"
+                    >Step To 0</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-state-input"
+                    id="stepTo0"
+                    value="0"
+                  />
+                </div>
+              </div>
+              <hr />
+              <div
+                class="flex justify-evenly items-center gap-2 p-4 pb-1 mt-[-1rem]"
+              >
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|maju">Maju</label
+                  ><input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|maju"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|mundur"
+                    >Mundur</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|mundur"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|kanan"
+                    >Kanan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|kanan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|kiri"
+                    >Kiri</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|kiri"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|putarKanan"
+                    >Putar Kanan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|putarKanan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|putarKiri"
+                    >Putar Kiri</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|putarKiri"
+                    value="0"
+                  />
+                </div>
+              </div>
+              <hr />
+              <div
+                class="flex justify-evenly items-center gap-2 p-4 pb-1 mt-[-1rem]"
+              >
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|majuPelan"
+                    >Maju Pelan</label
+                  ><input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|majuPelan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|mundurPelan"
+                    >Mundur Pelan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|mundurPelan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|kananPelan"
+                    >Kanan Pelan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|kananPelan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|kiriPelan"
+                    >Kiri Pelan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|kiriPelan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|putarKananPelan"
+                    >Putar Kanan Pelan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|putarKananPelan"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="move|putarKiriPelan"
+                    >Putar Kiri Pelan</label
+                  >
+                  <input
+                    type="text"
+                    class="robot-cmd-input"
+                    id="move|putarKiriPelan"
+                    value="0"
+                  />
+                </div>
+              </div>
+              <hr />
+              <div
+                class="flex justify-evenly items-center gap-2 p-4 pb-1 mt-[-1rem]"
+              >
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="global-x">X</label
+                  ><input
+                    type="text"
+                    class="global-position-input"
+                    disabled
+                    id="global-x"
+                    value="400"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="global-y">Y</label>
+                  <input
+                    type="text"
+                    class="global-position-input"
+                    disabled
+                    id="global-y"
+                    value="0"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="global-z">Z</label>
+                  <input
+                    type="text"
+                    class="global-position-input"
+                    disabled
+                    id="global-z"
+                    value="0"
+                  />
+                </div>
+              </div>
+              <hr />
+              <div class="grid grid-cols-3 gap-x-0 grid-flow-row gap-y-6 pb-2">
+                <button id="left-up" class="self-end justify-self-end"></button>
+                <button id="up" class="self-end justify-self-center"></button>
+                <button
+                  id="right-up"
+                  class="self-end justify-self-start"
+                ></button>
+                <button id="left" class="self-end justify-self-end"></button>
+                <button
+                  id="berhenti"
+                  class="justify-self-center cmd-btn"
+                ></button>
+                <button id="right" class="self-end justify-self-start"></button>
+                <button
+                  id="left-down"
+                  class="self-start justify-self-end"
+                ></button>
+                <button id="down" class="justify-self-center"></button>
+                <button
+                  id="right-down"
+                  class="self-start justify-self-start"
+                ></button>
+              </div>
+              <hr />
+              <div
+                class="flex flex-col px-4 pb-4 flex-1 text-[#519629] text-center text-sm font-bold"
+              >
+                <center>
+                  <button id="to_0" class="cmd-btn to-btn">0°</button>
+                </center>
+                <center
+                  class="flex flex-row gap-12 justify-center items-center"
+                >
+                  <button id="to_-90" class="cmd-btn to-btn">-90°</button>
+                  <button button id="to_90" class="cmd-btn to-btn">90°</button>
+                </center>
+                <center>
+                  <button button id="to_180" class="cmd-btn to-btn">
+                    180°
+                  </button>
+                </center>
+              </div>
+
+              <hr />
+              <datalist id="warnaPilihan">
+                <option value="merah" />
+                <option value="hijau" />
+                <option value="biru" />
+                <option value="kuning" />
+                <option value="cyan" />
+                <option value="magenta" />
+                <option value="O-merah" />
+                <option value="O-hijau" />
+                <option value="O-biru" />
+              </datalist>
+
+              <div
+                class="flex justify-center items-center gap-2 p-4 pb-1 mt-[-1rem] mb-4 flex-wrap"
+              >
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_0"
+                    >Rak 0</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_0"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_1"
+                    >Rak 1</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_1"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_2"
+                    >Rak 2</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_2"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_3"
+                    >Rak 3</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_3"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_4"
+                    >Rak 4</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_4"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_5"
+                    >Rak 5</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_5"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_6"
+                    >Rak 6</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_6"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_7"
+                    >Rak 7</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_7"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_rak_8"
+                    >Rak 8</label
+                  >
+                  <input
+                    type="text"
+                    class="rack-color-input"
+                    id="warna_rak_8"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+              </div>
+              <hr />
+
+              <div
+                class="flex justify-center items-center gap-2 p-4 pb-1 mt-[-1rem] mb-4 flex-wrap"
+              >
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_box_0"
+                    >Box 0</label
+                  >
+                  <input
+                    type="text"
+                    class="box-color-input"
+                    id="warna_box_0"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_box_1"
+                    >Box 1</label
+                  >
+                  <input
+                    type="text"
+                    class="box-color-input"
+                    id="warna_box_1"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_box_2"
+                    >Box 2</label
+                  >
+                  <input
+                    type="text"
+                    class="box-color-input"
+                    id="warna_box_2"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_box_3"
+                    >Box 3</label
+                  >
+                  <input
+                    type="text"
+                    class="box-color-input"
+                    id="warna_box_3"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+                <div class="flex justify-center items-center flex-col">
+                  <label class="text-xs text-center" for="warna_box_4"
+                    >Box 4</label
+                  >
+                  <input
+                    type="text"
+                    class="box-color-input"
+                    id="warna_box_4"
+                    value=""
+                    list="warnaPilihan"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="flex flex-col gap-8">
+            <div class="w-full bg-white shadow-sm border-r pb-4">
+              <div
+                class="w-full flex justify-between items-center px-4 py-2 mb-10"
+              >
+                <p class="text-sm mt-3">Commands</p>
+                <button id="reset" class="cmd-btn">Reset</button>
+              </div>
+              <hr />
+              <div
+                class="grid grid-cols-4 p-4 py-2 grid-flow-row gap-2 text-white text-[14px]"
+              >
+                <button id="maju" class="cmd-btn control-button">Maju</button>
+                <button id="mundur" class="cmd-btn control-button">
+                  Mundur
+                </button>
+                <button id="kanan" class="cmd-btn control-button">Kanan</button>
+                <button id="kiri" class="cmd-btn control-button">Kiri</button>
+                <button id="putarKanan" class="cmd-btn control-button">
+                  Putar Kanan
+                </button>
+                <button id="putarKiri" class="cmd-btn control-button">
+                  Putar Kiri
+                </button>
+                <button id="kananMaju" class="cmd-btn control-button">
+                  Kanan Maju
+                </button>
+                <button id="kananMundur" class="cmd-btn control-button">
+                  Kanan Mundur
+                </button>
+                <button id="kiriMaju" class="cmd-btn control-button">
+                  Kiri Maju
+                </button>
+                <button id="kiriMundur" class="cmd-btn control-button">
+                  Kiri Mundur
+                </button>
+              </div>
+              <hr />
+              <div
+                class="grid grid-cols-4 p-4 py-2 grid-flow-row gap-2 text-white text-[14px]"
+              >
+                <button id="majuPelan" class="cmd-btn control-button">
+                  Maju Pelan
+                </button>
+                <button id="mundurPelan" class="cmd-btn control-button">
+                  Mundur Pelan
+                </button>
+                <button id="kananPelan" class="cmd-btn control-button">
+                  Kanan Pelan
+                </button>
+                <button id="kiriPelan" class="cmd-btn control-button">
+                  Kiri Pelan
+                </button>
+                <button id="putarKananPelan" class="cmd-btn control-button">
+                  Putar Kanan Pelan
+                </button>
+                <button id="putarKiriPelan" class="cmd-btn control-button">
+                  Putar Kiri Pelan
+                </button>
+                <button id="kananMajuPelan" class="cmd-btn control-button">
+                  Kanan Maju Pelan
+                </button>
+                <button id="kananMundurPelan" class="cmd-btn control-button">
+                  Kanan Mundur Pelan
+                </button>
+                <button id="kiriMajuPelan" class="cmd-btn control-button">
+                  Kiri Maju Pelan
+                </button>
+                <button id="kiriMundurPelan" class="cmd-btn control-button">
+                  Kiri Mundur Pelan
+                </button>
+              </div>
+              <hr />
+              <div
+                class="grid grid-cols-4 p-4 py-2 grid-flow-row gap-2 text-white text-[14px]"
+              >
+                <button id="send_sonar" class="cmd-btn control-button">
+                  Cek Sensor Jarak
+                </button>
+                <button id="stop_sonar" class="cmd-btn control-button stop-btn">
+                  Stop Sensor Jarak
+                </button>
+                <button id="send_line" class="cmd-btn control-button">
+                  Cek Sensor Line
+                </button>
+                <button id="stop_line" class="cmd-btn control-button stop-btn">
+                  Stop Sensor Line
+                </button>
+              </div>
+              <hr />
+              <div
+                class="grid grid-cols-4 p-4 py-2 grid-flow-row gap-2 text-white text-[14px]"
+              >
+                <button id="vision|merah" class="cmd-btn control-button">
+                  Cari Kotak Merah
+                </button>
+                <button id="vision|hijau" class="cmd-btn control-button">
+                  Cari Kotak Hijau
+                </button>
+                <button id="vision|biru" class="cmd-btn control-button">
+                  Cari Kotak Biru
+                </button>
+                <button id="vision|kuning" class="cmd-btn control-button">
+                  Cari Kotak Kuning
+                </button>
+                <button id="vision|cyan" class="cmd-btn control-button">
+                  Cari Kotak Cyan
+                </button>
+                <button id="vision|magenta" class="cmd-btn control-button">
+                  Cari Kotak Magenta
+                </button>
+
+                <button id="vision|O-merah" class="cmd-btn control-button">
+                  Cari O-Merah
+                </button>
+                <button id="vision|O-hijau" class="cmd-btn control-button">
+                  Cari O-Hijau
+                </button>
+                <button id="vision|O-biru" class="cmd-btn control-button">
+                  Cari O-Biru
+                </button>
+
+                <button id="vision|qr" class="cmd-btn control-button">
+                  Scan QR Code
+                </button>
+
+                <button id="vision|lihat" class="cmd-btn control-button">
+                  Buka Vision
+                </button>
+                <button
+                  id="vision|stop"
+                  class="cmd-btn control-button stop-btn"
+                >
+                  Stop Vision
+                </button>
+              </div>
+              <hr />
+              <div
+                class="grid grid-cols-4 p-4 py-2 grid-flow-row gap-2 text-white text-[14px]"
+              >
+                <button id="lineFollow:12" class="cmd-btn control-button">
+                  Ikuti Garis Maju
+                </button>
+                <button id="lineFollow:6,-1" class="cmd-btn control-button">
+                  Ikuti Garis Mundur
+                </button>
+                <button id="geserCariGaris:kiri" class="cmd-btn control-button">
+                  Geser Kiri Cari Garis
+                </button>
+                <button
+                  id="geserCariGaris:kanan"
+                  class="cmd-btn control-button"
+                >
+                  Geser Kanan Cari Garis
+                </button>
+                <button id="geserDariGaris:kiri" class="cmd-btn control-button">
+                  Geser Kiri Dari Garis
+                </button>
+                <button
+                  id="geserDariGaris:kanan"
+                  class="cmd-btn control-button"
+                >
+                  Geser Kanan Dari Garis
+                </button>
+              </div>
+              <hr />
+              <div
+                class="grid grid-cols-4 p-4 py-2 grid-flow-row gap-2 text-white text-[14px]"
+              >
+                <button
+                  id="atwc|kiri_depan:15,24"
+                  class="cmd-btn control-button"
+                >
+                  Pas Kiri Depan
+                </button>
+                <button
+                  id="atwc|kanan_depan:15,24"
+                  class="cmd-btn control-button"
+                >
+                  Pas Kanan Depan
+                </button>
+                <button
+                  id="atwc|kiri_belakang:15,6"
+                  class="cmd-btn control-button"
+                >
+                  Pas Kiri Belakang
+                </button>
+                <button
+                  id="atwc|kanan_belakang:15,6"
+                  class="cmd-btn control-button"
+                >
+                  Pas Kanan Belakang
+                </button>
+                <button id="atwc|depan:15,15" class="cmd-btn control-button">
+                  Paskan Depan
+                </button>
+                <button id="atwc|belakang:15,6" class="cmd-btn control-button">
+                  Paskan Belakang
+                </button>
+                <button id="atwc|kiri:15,15" class="cmd-btn control-button">
+                  Paskan Kiri
+                </button>
+                <button id="atwc|kanan:15,15" class="cmd-btn control-button">
+                  Paskan Kanan
+                </button>
+              </div>
+              <hr />
+              <div
+                class="grid grid-cols-4 p-4 py-2 grid-flow-row gap-2 text-white text-[14px]"
+              >
+                <button
+                  id="vision|ingat_warna_box:0"
+                  class="cmd-btn control-button"
+                >
+                  Ingat Warna Box 0
+                </button>
+                <button
+                  id="vision|ingat_warna_box:1"
+                  class="cmd-btn control-button"
+                >
+                  Ingat Warna Box 1
+                </button>
+                <button
+                  id="vision|ingat_warna_box:2"
+                  class="cmd-btn control-button"
+                >
+                  Ingat Warna Box 2
+                </button>
+                <button
+                  id="vision|ingat_warna_box:3"
+                  class="cmd-btn control-button"
+                >
+                  Ingat Warna Box 3
+                </button>
+                <button
+                  id="vision|ingat_warna_box:4"
+                  class="cmd-btn control-button"
+                >
+                  Ingat Warna Box 4
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="vendor/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="vendor/anime.min.js"></script>
+    <script src="js/robot.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# VSCode config (optional)
+.vscode/
+
+# RustDesk temp (optional kalau RustDesk auto generate)
+*.log
+
+basestation/node_modules/
+
+*/**/_db_/

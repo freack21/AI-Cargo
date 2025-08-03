@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/video-js.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.min.css" />
+    <title>Vision Control Panel | Inayah</title>
+  </head>
+
+  <body class="green vision">
+    <!-- navbar -->
+    <ul class="nav navbar-c justify-content-center my-3 nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="vision.html"
+          >Vision</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="perintah.html">Perintah</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="kalibrasi.html">Kalibrasi</a>
+      </li>
+    </ul>
+
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-12">
+          <div class="card border-r shadow-sm">
+            <div class="card-body">
+              <div class="text-center">
+                <p>Robot</p>
+              </div>
+
+              <img id="robot" class="video-js" src="" alt="Vision Robot" />
+
+              <div class="row">
+                <div class="col-lg-6 mx-auto">
+                  <div class="d-grid gap-2 mt-3 mb-3">
+                    <button
+                      class="btn btn-green"
+                      id="startVision2"
+                      type="button"
+                    >
+                      Start Vision
+                    </button>
+                  </div>
+                </div>
+                <div class="col-lg-6 mx-auto">
+                  <div class="d-grid gap-2 mt-3 mb-3">
+                    <button
+                      class="btn btn-danger"
+                      id="endVision2"
+                      type="button"
+                    >
+                      Stop Vision
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+
+      socket.on("open_cv", ({ frame, robot }) => {
+        document.getElementById(robot).src = `data:image/jpeg;base64,${frame}`;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,332 @@
+@import url("../vendor/bootstrap/css/bootstrap.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+
+.green {
+  background-color: rgb(81 150 41);
+}
+
+.btn-green {
+  background-color: rgb(81 150 41);
+  color: white;
+
+  &:active,
+  &:hover {
+    background-color: rgb(81 150 41);
+    color: white;
+  }
+}
+
+.border-r {
+  border-radius: 10px;
+}
+
+.home {
+  margin-top: 50px;
+  font-family: "Rubik", sans-serif;
+
+  .logo {
+    margin-bottom: 70px;
+
+    img {
+      width: 100px;
+    }
+
+    .mr {
+      margin-right: 25px;
+    }
+
+    .ml {
+      margin-left: 25px;
+    }
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .card {
+    border: none;
+
+    h6 {
+      font-size: 24px;
+    }
+  }
+}
+
+body {
+  font-family: "Rubik", sans-serif;
+}
+
+.navbar-c {
+  .nav-item {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 120px;
+    text-align: center;
+
+    .nav-link {
+      color: white;
+
+      &.active {
+        text-align: center;
+        background-color: rgb(107, 172, 70);
+      }
+    }
+  }
+}
+
+.vision {
+  .video-js {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+}
+
+.mb-10 {
+  margin-bottom: -20px;
+}
+
+.setting {
+  .status-p {
+    .statusP {
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .off {
+      background-color: red;
+    }
+
+    .on {
+      background-color: #4bee0b;
+    }
+  }
+
+  .color-team {
+    .cyan {
+      background-color: #00ffff;
+    }
+
+    .magenta {
+      background-color: #ff00ff;
+    }
+
+    .dp-team {
+      border-radius: 10px;
+
+      .btn {
+        border-radius: 10px;
+        margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 100px;
+      }
+    }
+  }
+}
+
+.perintah {
+  #app {
+    a {
+      text-decoration: none;
+    }
+
+    .card {
+      height: 100px;
+      width: 100px;
+
+      .card-body {
+        position: relative;
+        text-align: center;
+        padding: 40px 0;
+        border-radius: 10px;
+
+        p {
+          text-decoration: none !important;
+          font-size: 18px;
+        }
+      }
+    }
+
+    .col-md-2 {
+      position: relative;
+
+      .btn-delete {
+        position: absolute;
+        font-size: 10px;
+        width: 30px;
+        padding: 8px 10px;
+        top: 19px;
+        left: 78px;
+      }
+    }
+  }
+}
+
+.moda {
+  .mt-10 {
+    margin-top: -10px;
+  }
+
+  .list-group-item {
+    cursor: grab;
+  }
+
+  .modal {
+    .modal-title {
+      text-transform: capitalize;
+    }
+  }
+
+  #list1,
+  #list2 {
+    .form {
+      width: 50px;
+      margin: 0 5px;
+      border-radius: 5px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-align: center;
+      appearance: none;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .d-flex .icons {
+      text-transform: capitalize;
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  .dumny-card {
+    position: relative;
+
+    .dummy-input {
+      width: 50px;
+      height: 40px;
+      margin: 0 5px;
+      border-radius: 5px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-align: center;
+      appearance: none;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    span {
+      position: absolute;
+      margin-top: 7px;
+      margin-left: -5px;
+    }
+  }
+}
+
+.regional {
+  .btn-move {
+    margin-top: -10px;
+    margin-bottom: -30px;
+    padding: 5px 40px;
+  }
+
+  .log-informasi {
+    .card {
+      width: 100%;
+      top: -230px;
+      height: 300px;
+    }
+
+    .consoleLog {
+      background-color: #141728;
+      margin-top: -10px;
+      height: 225px;
+      padding: 10px 14px;
+      color: #5cc87c;
+      overflow-y: scroll;
+      font-size: 14px;
+
+      p {
+        margin-bottom: -2px;
+      }
+
+      .dollar {
+        color: white;
+      }
+    }
+
+    // scroll
+    .consoleLog::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      background-color: #f5f5f5;
+    }
+
+    .consoleLog::-webkit-scrollbar {
+      width: 5px;
+      background-color: #f5f5f5;
+    }
+
+    .consoleLog::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: #555;
+    }
+
+    .btn-clock {
+      margin-top: 10px;
+      margin-bottom: -10px;
+      margin-left: -50px;
+      font-size: 15px;
+      padding: 5px 10px;
+      width: 35px;
+    }
+
+    .btn-delete {
+      margin-top: 10px;
+      margin-bottom: -10px;
+      margin-left: -90px;
+      font-size: 15px;
+      width: 35px;
+      padding: 5px 10px;
+    }
+  }
+}
+
+// custom scroll
+body::-webkit-scrollbar-track {
+  background-color: #519629;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  background-color: #519629;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 64px;
+}
