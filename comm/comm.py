@@ -4,7 +4,7 @@ from commbotpy import CommBotClient
 class Socket :
   def __init__(self) :
     # Initialize CommBot
-    self.cb = CommBotClient("COM5")
+    self.cb = CommBotClient("/dev/ttyUSB0")
 
     self.initGlobalVars()
     self.initSocketIO()
@@ -16,8 +16,8 @@ class Socket :
     # self.alamatIP = "http://10.234.218.146:3210/"
     # self.alamatIP = "http://172.16.252.106:3210/"
     # self.alamatIP = "http://192.168.1.84:3210/"
-    # self.alamatIP = "http://192.168.137.1:3210/"
-    self.alamatIP = "http://localhost:3210/"
+    self.alamatIP = "http://192.168.137.1:3210/"
+    # self.alamatIP = "http://localhost:3210/"
 
     self.is_debug = True
 
@@ -80,7 +80,7 @@ class Socket :
 
 
   def on_disconnect(self):
-    self.cb.log(f'{self.myUsername} disconnected from Socket.IO server!')
+    self.cb.log(f"'{self.myUsername}' disconnected from Socket.IO server!")
 
 
   def run(self) :
