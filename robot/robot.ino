@@ -1,23 +1,87 @@
 #include <CommBot.h>
 
+// +++
+int MOTOR_SPEED = 50;
+// ---
+
+// +++
+// Motor 4 (Driver A)
+#define IN7 22
+#define IN8 23
+#define ENA1 4 // PWM
+
+// Motor 3 (Driver A)
+#define IN5 25
+#define IN6 24
+#define ENB1 5 // PWM
+
+// Motor 2 (Driver B)
+#define IN3 26
+#define IN4 27
+#define ENA2 2 // PWM
+
+// Motor 1 (Driver B)
+#define IN1 29
+#define IN2 28
+#define ENB2 3 // PWM
+// ---
+
+// +++
+#include "HX711.h"
+
+#define DT 53
+#define SCK 52
+
+HX711 scale;
+// ---
+
+// +++
 bool isCommandDone = true;
-String myCommand;
+bool isReset = false;
+String myCommand = "";
 
-CommBot cb(Serial);
+bool is_send_berat = false;
+// ---
 
-const String cmd_status_path = "/mega/cmd_status";
+// +++
+#define BAUD_RATE 115200
+
+CommBot cb(Serial, BAUD_RATE);
+
+#define cmd_status_path "/mega/cmd_status"
 JsonDocument cmd_status_doc;
+#define robot_state_path "/mega/robot_state"
+JsonDocument robot_state_doc;
 
 void command_listener(const JsonObject& msg);
+// ---
 
 void setup() {
-  cb.begin(115200);
+  pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT); pinMode(ENA1, OUTPUT);
+  pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT); pinMode(ENB1, OUTPUT);
+  pinMode(IN5, OUTPUT); pinMode(IN6, OUTPUT); pinMode(ENA2, OUTPUT);
+  pinMode(IN7, OUTPUT); pinMode(IN8, OUTPUT); pinMode(ENB2, OUTPUT);
+
+  scale.begin(DT, SCK);
+  scale.set_scale();
+  scale.tare();
+
+  cb.begin();
 
   cb.subscribe("/master/command", command_listener);
 
   cb.log("AI-Cargo online!");
 }
 
-void loop() {
+void looping() {
+  if (is_send_berat) {
+    send_berat();
+  }
+
   cb.spinOnce();
+}
+
+void loop() {
+  looping();
+  delay(10);
 }

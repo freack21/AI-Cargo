@@ -12,6 +12,30 @@ void command_listener(const JsonObject& msg) {
   cmd_status_doc["data"] = "received";
   cb.publish(cmd_status_path, cmd_status_doc);
 
-  cmd_status_doc["data"] = "[slave] executed '" + myCommand + "'|1";
+  if (data == "reset") {
+    if (!isReset) {
+      isReset = true;
+      reset();
+    } else {
+      reset();
+      isReset = false;
+    }
+  }
+  else if (!isCommandDone) {
+    cmd_status_doc["data"] = "[slave] executing (" + myCommand + ")|0";
+    cb.publish(cmd_status_path, cmd_status_doc);
+    return;
+  }
+  else if (isReset) {
+    cmd_status_doc["data"] = "[slave] RESETTING..|0";
+    cb.publish(cmd_status_path, cmd_status_doc);
+    return;
+  }
+  isCommandDone = false;
+
+  handleCommandString(data);
+
+  isCommandDone = true;
+  cmd_status_doc["data"] = "[slave] executed (" + myCommand + ")|1";
   cb.publish(cmd_status_path, cmd_status_doc);
 }
