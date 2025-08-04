@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git pull
+cd ~/aikargo/ && git pull
 
 cd comm/
 python3 comm.py
