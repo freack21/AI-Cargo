@@ -1,0 +1,4 @@
+pyserial
+python-socketio
+websocket-client
+commbotpy
