@@ -95,10 +95,6 @@ void putarKiri() {
 }
 
 void berhenti() {
-  mundur();
-
-  delay(100);
-
   digitalWrite(IN1, LOW); digitalWrite(IN2, LOW); analogWrite(ENA1, 0);
   digitalWrite(IN3, LOW); digitalWrite(IN4, LOW); analogWrite(ENB1, 0);
   digitalWrite(IN5, LOW); digitalWrite(IN6, LOW); analogWrite(ENA2, 0);

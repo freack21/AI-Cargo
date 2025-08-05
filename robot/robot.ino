@@ -1,29 +1,29 @@
 #include <CommBot.h>
 
 // +++
-int MOTOR_SPEED = 50;
+int MOTOR_SPEED = 75;
 // ---
 
 // +++
 // Motor 4 (Driver A)
-#define IN7 22
-#define IN8 23
-#define ENA1 4 // PWM
+#define IN7 29
+#define IN8 28
+#define ENB2 5 // PWM
 
 // Motor 3 (Driver A)
-#define IN5 25
-#define IN6 24
-#define ENB1 5 // PWM
+#define IN5 27
+#define IN6 26
+#define ENA2 4 // PWM
 
 // Motor 2 (Driver B)
-#define IN3 26
-#define IN4 27
-#define ENA2 2 // PWM
+#define IN3 25
+#define IN4 24
+#define ENB1 3 // PWM
 
 // Motor 1 (Driver B)
-#define IN1 29
-#define IN2 28
-#define ENB2 3 // PWM
+#define IN1 22
+#define IN2 23
+#define ENA1 2 // PWM
 // ---
 
 // +++
