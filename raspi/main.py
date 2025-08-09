@@ -2,6 +2,7 @@ import socketio
 import json
 import os
 from gpiozero import PWMOutputDevice, DigitalOutputDevice
+from gpiozero.pins.lgpio import LGPIOFactory
 import time
 
 ENV_FILE = os.path.join(os.path.dirname(__file__), "env.json")
@@ -17,11 +18,13 @@ motors = {
   'M4': {'L_IN': 20, 'R_IN': 21,  'EN': 19},
 }
 
+pin_factory = LGPIOFactory()
+
 # Setup motor pins
 for name, m in motors.items():
-    m['l_in_dev'] = DigitalOutputDevice(m['L_IN'])
-    m['r_in_dev'] = DigitalOutputDevice(m['R_IN'])
-    m['en_dev'] = PWMOutputDevice(m['EN'], frequency=1000)
+    m['l_in_dev'] = DigitalOutputDevice(m['L_IN'], pin_factory=pin_factory)
+    m['r_in_dev'] = DigitalOutputDevice(m['R_IN'], pin_factory=pin_factory)
+    m['en_dev'] = PWMOutputDevice(m['EN'], frequency=1000, pin_factory=pin_factory)
 
 def motor_forward(motor, speed=0.75):
     motor['l_in_dev'].on()
