@@ -1,15 +1,13 @@
 import socketio
 import json
 import os
-import RPi.GPIO as GPIO
+from gpiozero import PWMOutputDevice, DigitalOutputDevice
 import time
 
 ENV_FILE = os.path.join(os.path.dirname(__file__), "env.json")
 _env_ = {}
 with open(ENV_FILE, "r") as f:
   _env_ = json.load(f)
-
-GPIO.setmode(GPIO.BCM)
 
 # Motor pin mapping
 motors = {
@@ -20,28 +18,25 @@ motors = {
 }
 
 # Setup motor pins
-for m in motors.values():
-  GPIO.setup(m['L_IN'], GPIO.OUT)
-  GPIO.setup(m['R_IN'], GPIO.OUT)
-  GPIO.setup(m['EN'], GPIO.OUT)
-  m['pwm'] = GPIO.PWM(m['EN'], 1000)  # 1 kHz PWM
-  m['pwm'].start(0)
+for name, m in motors.items():
+    m['l_in_dev'] = DigitalOutputDevice(m['L_IN'])
+    m['r_in_dev'] = DigitalOutputDevice(m['R_IN'])
+    m['en_dev'] = PWMOutputDevice(m['EN'], frequency=1000)
 
-def motor_forward(motor, speed=75):
-  GPIO.output(motor['L_IN'], GPIO.HIGH)
-  GPIO.output(motor['R_IN'], GPIO.LOW)
-  motor['pwm'].ChangeDutyCycle(speed)
+def motor_forward(motor, speed=0.75):
+    motor['l_in_dev'].on()
+    motor['r_in_dev'].off()
+    motor['en_dev'].value = speed
 
-def motor_backward(motor, speed=75):
-  GPIO.output(motor['L_IN'], GPIO.LOW)
-  GPIO.output(motor['R_IN'], GPIO.HIGH)
-  motor['pwm'].ChangeDutyCycle(speed)
+def motor_backward(motor, speed=0.75):
+    motor['l_in_dev'].off()
+    motor['r_in_dev'].on()
+    motor['en_dev'].value = speed
 
 def motor_stop(motor):
-  GPIO.output(motor['L_IN'], GPIO.LOW)
-  GPIO.output(motor['R_IN'], GPIO.LOW)
-  motor['pwm'].ChangeDutyCycle(0)
-
+    motor['l_in_dev'].off()
+    motor['r_in_dev'].off()
+    motor['en_dev'].value = 0
 
 class Socket :
   def __init__(self) :
