@@ -1,0 +1,4 @@
+RPi.GPIO
+python-socketio
+websocket-client
+hx711
