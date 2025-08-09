@@ -13,7 +13,7 @@ with open(ENV_FILE, "r") as f:
 # Motor pin mapping
 motors = {
   'M1': {'L_IN': 23,  'R_IN': 24,  'EN': 18},
-  'M2': {'L_IN': 8, 'R_IN': 7, 'EN': 12},
+  'M2': {'L_IN': 16, 'R_IN': 26, 'EN': 12},
   'M3': {'L_IN': 5, 'R_IN': 6, 'EN': 13},
   'M4': {'L_IN': 20, 'R_IN': 21,  'EN': 19},
 }
@@ -118,8 +118,7 @@ class Socket :
     except KeyboardInterrupt:
       print("Mematikan Robot..")
       for m in motors.values():
-        m['pwm'].stop()
-      GPIO.cleanup()
+        motor_stop(m)
 
 if __name__ == '__main__':
   node = Socket()
