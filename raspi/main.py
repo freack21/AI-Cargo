@@ -65,6 +65,10 @@ class Socket :
       self.robot.kiri(speed)
     elif command == "kanan":
       self.robot.kanan(speed)
+    elif command == "mundur_kiri":
+      self.robot.mundur_kiri(speed)
+    elif command == "mundur_kanan":
+      self.robot.mundur_kanan(speed)
     elif command == "putar_kiri":
       self.robot.putar_kiri(speed)
     elif command == "putar_kanan":

@@ -71,6 +71,18 @@ class Robot :
     self.motor_forward(self.motors["M3"], speed)
     self.motor_forward(self.motors["M4"], speed)
 
+  def mundur_kiri(self, speed=0):
+    self.motor_backward(self.motors["M1"], speed)
+    self.motor_backward(self.motors["M2"], speed)
+    self.motor_forward(self.motors["M3"], speed * 0.5)
+    self.motor_backward(self.motors["M4"], speed)
+
+  def mundur_kanan(self, speed=0):
+    self.motor_backward(self.motors["M1"], speed)
+    self.motor_backward(self.motors["M2"], speed)
+    self.motor_backward(self.motors["M3"], speed)
+    self.motor_forward(self.motors["M4"], speed * 0.5)
+
   def putar_kiri(self, speed=0):
     self.motor_backward(self.motors["M1"], speed)
     self.motor_forward(self.motors["M2"], speed)
