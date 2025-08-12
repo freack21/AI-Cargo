@@ -100,7 +100,7 @@ class Socket :
 
   def run_commands(self, commands):
     for command in commands:
-      cmd = f"move|{command['cmd']}:{command['time']},{command['speed']}"
+      cmd = f"move|{command['cmd']}:{command['time']},{(float)(int(command['speed']) / 100)}"
       self.parse_move_command(cmd)
 
 
