@@ -183,11 +183,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("run-commands", ({ commands, robot }) => {
-    logging("COMMANDS: " + commands);
-    io.to(id_robots[robot]).emit(
-      "run_commands",
-      JSON.parse(commands || "[]") || []
-    );
+    logging("COMMANDS: " + JSON.stringify(commands, null, 2));
+    io.to(id_robots[robot]).emit("run_commands", commands || []);
   });
 });
 
