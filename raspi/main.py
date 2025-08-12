@@ -29,6 +29,7 @@ class Socket :
     self.sio = socketio.Client()
     self.sio.on("connect", self.on_connect)
     self.sio.on("perintah", self.on_perintah)
+    self.sio.on("run_commands", self.on_run_commands)
     self.sio.on("disconnect", self.on_disconnect)
     self.sio.connect(self.alamatIP)
 
@@ -43,6 +44,11 @@ class Socket :
       print(f'perintah: {command}')
     self.handle_command(command)
 
+  def on_run_commands(self, commands):
+    if self.is_debug:
+      print(f'commands: {commands}')
+    self.run_commands(commands)
+
   def on_disconnect(self):
     print(f"'{self.myUsername}' disconnected from Socket.IO server!")
 
@@ -54,7 +60,7 @@ class Socket :
     else :
       self.move_commands(command)
 
-  def move_commands(self, command, speed=0):
+  def move_commands(self, command, speed=0, _time=0):
     if command == "berhenti":
       self.robot.berhenti()
     elif command == "maju":
@@ -73,11 +79,29 @@ class Socket :
       self.robot.putar_kiri(speed)
     elif command == "putar_kanan":
       self.robot.putar_kanan(speed)
+    
+    self.wait_time_to_stop(_time)
 
   def parse_move_command(self, command):
     [_, data] = command.split("|")
-    [cmd, speed] = data.split(":")
-    self.move_commands(cmd, speed)
+    [cmd, time_and_speed] = data.split(":")
+    [_time, speed] = time_and_speed.split(",")
+    self.move_commands(cmd, speed, _time)
+
+  def wait_time_to_stop(self, _time):
+    if _time == 0:
+      return
+
+    start_time = time.time()
+    while start_time - time.time() < _time:
+      pass
+
+    self.robot.berhenti()
+
+  def run_commands(self, commands):
+    for command in commands:
+      cmd = f"move|{command['cmd']}:{command['time']},{command['speed']}"
+      self.parse_move_command(cmd)
 
 
 

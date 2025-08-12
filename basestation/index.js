@@ -181,6 +181,14 @@ io.on("connection", (socket) => {
       kirimPerintah(perintah, robot);
     }
   });
+
+  socket.on("run-commands", ({ commands, robot }) => {
+    logging("COMMANDS: " + commands);
+    io.to(id_robots[robot]).emit(
+      "run_commands",
+      JSON.parse(commands || "[]") || []
+    );
+  });
 });
 
 const os = require("os");
