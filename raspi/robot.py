@@ -5,10 +5,10 @@ class Robot :
   def __init__(self) :
     # Motor pin mapping
     self.motors = {
-      'M1': {'IN1': 23, 'IN2': 24, 'EN': 18},
+      'M1': {'IN1': 24, 'IN2': 23, 'EN': 18},
       'M2': {'IN1': 16, 'IN2': 26, 'EN': 12},
-      'M3': {'IN1': 5, 'IN2': 6, 'EN': 13},
-      'M4': {'IN1': 21, 'IN2': 20, 'EN': 19},
+      'M3': {'IN1': 6, 'IN2': 5, 'EN': 13},
+      'M4': {'IN1': 20, 'IN2': 21, 'EN': 19},
     }
 
     self.speed = 0.75

@@ -60,7 +60,7 @@ class Socket :
     else :
       self.move_commands(command)
 
-  def move_commands(self, command, speed=0, _time=0):
+  def move_commands(self, command, speed=0, _time=0.0):
     if command == "berhenti":
       self.robot.berhenti()
     elif command == "maju":
@@ -79,14 +79,14 @@ class Socket :
       self.robot.putar_kiri(speed)
     elif command == "putar_kanan":
       self.robot.putar_kanan(speed)
-    
+
     self.wait_time_to_stop(_time)
 
   def parse_move_command(self, command):
     [_, data] = command.split("|")
     [cmd, time_and_speed] = data.split(":")
     [_time, speed] = time_and_speed.split(",")
-    self.move_commands(cmd, speed, _time)
+    self.move_commands(cmd, float(speed) / 100, float(_time))
 
   def wait_time_to_stop(self, _time):
     if _time == 0:
@@ -100,7 +100,7 @@ class Socket :
 
   def run_commands(self, commands):
     for command in commands:
-      cmd = f"move|{command['cmd']}:{command['time']},{(float)(int(command['speed']) / 100)}"
+      cmd = f"move|{command['cmd']}:{command['time']},{command['speed']}"
       self.parse_move_command(cmd)
 
 
