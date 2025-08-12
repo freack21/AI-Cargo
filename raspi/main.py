@@ -9,7 +9,7 @@ _env_ = {}
 with open(ENV_FILE, "r") as f:
   _env_ = json.load(f)
 
-class Socket :
+class SocketConn :
   def __init__(self) :
     self.initRobot()
     self.initGlobalVars()
@@ -92,9 +92,7 @@ class Socket :
     if _time == 0:
       return
 
-    start_time = time.time()
-    while start_time - time.time() < _time:
-      pass
+    time.sleep(_time)
 
     self.robot.berhenti()
 
@@ -109,11 +107,11 @@ class Socket :
   def run(self) :
     try:
       while True:
-        time.sleep(0.1)
+        pass
     except KeyboardInterrupt:
       self.robot.berhenti()
       print("Mematikan Robot..")
 
 if __name__ == '__main__':
-  node = Socket()
+  node = SocketConn()
   node.run()

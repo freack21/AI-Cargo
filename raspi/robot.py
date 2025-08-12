@@ -16,7 +16,7 @@ class Robot :
     pin_factory = LGPIOFactory()
 
     # Setup motor pins
-    for m in self.motors.items():
+    for _, m in self.motors.items():
       m['L_IN'] = DigitalOutputDevice(m['IN1'], pin_factory=pin_factory)
       m['R_IN'] = DigitalOutputDevice(m['IN2'], pin_factory=pin_factory)
       m['PWM'] = PWMOutputDevice(m['EN'], frequency=1000, pin_factory=pin_factory)
